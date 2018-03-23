@@ -6,8 +6,14 @@ class testspider(scrapy.Spider):
                   # ]
                   ,'http://tester2.409dostastudio.work/']
     url_lists = []
+    injured_words = []
 
     def parse(self, response):
+        contents = response.xpath('//input[@name]/@name').extract()
+        for word in contents:
+            testspider.injured_words.append(word)
+
+
         ifnonewurls = 1
         testspider.url_lists.append(response.url)
         #get all request page
@@ -42,13 +48,13 @@ class testspider(scrapy.Spider):
                     f.write(urls + '\n')
                 f.close()
             self.log('Saved url_list')
+            with open('target_list.txt','w') as f:
+                for word in testspider.injured_words:
+                    f.write(word + '\n')
+                f.close()
+            self.log('Saved target_list')
 
     #get context
     def parseContent(self, response):
-        contents = response.xpath('//@input/name').extract()
-        with open('target_list.txt','w') as f:
-            for content in contents:
-                f.write(content + '\n')
-            f.close()
-        self.log('Saved target_list')
+
         pass
