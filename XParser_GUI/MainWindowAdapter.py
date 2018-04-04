@@ -9,6 +9,9 @@ class MainWindowAdapter(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.setWindowTitle("XParser")
 
+    def quick_run(self):
+        """根据界面参数快速运行XPaser"""
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = MainWindowAdapter();
