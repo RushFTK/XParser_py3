@@ -6,6 +6,12 @@ import XParser_GUI.GeneralOutput
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class GeneralOutputAdapter(QtWidgets.QDialog):
+    """
+         成员变量:
+         ui :                   该窗体的界面元素
+         log_dialog :           该窗体所关联的"日志对话框"窗体对象
+         flag_running :         本窗体是否处于运行状态
+     """
     def __init__(self):
         super(GeneralOutputAdapter,self).__init__()
         self.ui = XParser_GUI.GeneralOutput.Ui_Dialog()
@@ -13,6 +19,8 @@ class GeneralOutputAdapter(QtWidgets.QDialog):
         self.ui.pushButton_savelog.clicked.connect(self.savelog)
         self.ui.pushButton_clear.clicked.connect(self.clear_all_message)
         self.ui.pushButton_close.clicked.connect(quit)
+        self.flag_running = False
+        self.clear_all_message()
 
     def showEvent(self, QShowEvent):
         pass

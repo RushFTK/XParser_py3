@@ -73,6 +73,13 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton_hide">
+        <property name="text">
+         <string>隐藏</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButton_close">
         <property name="text">
          <string>关闭(&amp;L)</string>

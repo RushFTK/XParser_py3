@@ -15,8 +15,9 @@ class MainWindowAdapter(QtWidgets.QMainWindow):
         self.setWindowTitle("XParser")
         self.log_dialog = GeneralOutputAdapter.GeneralOutputAdapter()
 
+        self.ui.pushButton_quickstartanalyze
+
     def showEvent(self, *args, **kwargs):
-        self.call_logdialog()
         pass
 
     def call_logdialog(self):
@@ -24,7 +25,9 @@ class MainWindowAdapter(QtWidgets.QMainWindow):
         if (self.log_dialog.flag_running):
             self.log_dialog.show()
         else :
-            self.log_dialog.exec_()
+            self.log_dialog.exec()
+            self.log_dialog.flag_running = True
+        self.show()
 
     def quick_run(self):
         """根据界面参数快速运行XPaser"""
