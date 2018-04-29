@@ -1,6 +1,7 @@
 import os
 import subprocess
 from test_windowssupport import *
+from scrapy.cmdline import execute
 
 def run_crawler():
     # 检查配置环境
@@ -11,7 +12,8 @@ def run_crawler():
     # exec_order = 'cd ' + location +  '\crawler_scrapy & dir'
     print(exec_order)
     result = subprocess.call(exec_order, shell=True)
-    print(result)
+    if (result == 1):
+        execute('scrapy crawl test -a testitem=test')
     return 0
 
 if __name__ == '__main__':

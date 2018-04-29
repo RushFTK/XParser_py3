@@ -5,6 +5,7 @@ class testspider(scrapy.Spider):
     start_urls = ['http://tester1.409dostastudio.work/'
                   # ]
                   ,'http://tester2.409dostastudio.work/']
+    allowed_domains = '409dostastudio.work'
     url_lists = []
     injured_words = []
 
