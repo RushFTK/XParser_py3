@@ -10,10 +10,16 @@ def checkalter_example(url):
     driver.switch_to.frasme("iframeResult")
     driver.find_element_by_xpath("html/body/input").click()
     time.sleep(1)
-    al = driver.switch_to_alert()
+    al = driver.switch_to.alert()
     time.sleep(1)
     al.accept()
 
+def checke_alter(url):
+    driver = webdriver.Chrome('drivers/chromedriver')
+    driver.get(url)
+
+
+
 if __name__ == '__main__':
-    # checkalter_example("http://www.runoob.com/try/try.php?filename=tryjs_alert")
-    checkalter_example("http://www.baidu.com")
+    checkalter_example("http://www.runoob.com/try/try.php?filename=tryjs_alert")
+    # checkalter_example("http://www.baidu.com")

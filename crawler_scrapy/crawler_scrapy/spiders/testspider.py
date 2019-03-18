@@ -2,18 +2,23 @@ import scrapy
 
 class testspider(scrapy.Spider):
     name = "test"
-    start_urls = ['http://tester1.409dostastudio.work/'
-                  # ]
-                  ,'http://tester2.409dostastudio.work/']
     allowed_domains = '409dostastudio.work'
     url_lists = []
     injured_words = []
+
+    def __init__(self, start_urls=None, *args, **kwargs):
+        super(eval(self.__class__.__name__), self).__init__(*args, **kwargs)
+        self.start_url = start_urls
+        testspider.url_lists.append(start_urls)
+
+    def start_requests(self):
+        yield scrapy.Request(self.start_url, self.parse)
+        #yield scrapy.Request('http://tester2.409dostastudio.work/', self.parse)
 
     def parse(self, response):
         contents = response.xpath('//input[@name]/@name').extract()
         for word in contents:
             testspider.injured_words.append(word)
-
 
         ifnonewurls = 1
         testspider.url_lists.append(response.url)
@@ -33,6 +38,10 @@ class testspider(scrapy.Spider):
                 if not real_url in testspider.url_lists:
                     ifnonewurls = 0
                     yield scrapy.Request(response.urljoin(real_url))
+
+        print("testspider.target_list=")
+        print(testspider.injured_words)
+
 
         #confirm saved page title
         # page_name = response.url

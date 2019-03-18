@@ -68,19 +68,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_onlydefaultattackerlist">
-        <property name="text">
-         <string>仅使用预置攻击向量</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="checkBox_dontanalyzestructer">
         <property name="text">
          <string>不分析网页结构</string>
@@ -138,6 +125,7 @@
     <property name="title">
      <string>文件(&amp;F)</string>
     </property>
+    <addaction name="actionbegin"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -166,6 +154,11 @@
   <action name="action_checkupdate">
    <property name="text">
     <string>检查更新(&amp;C)</string>
+   </property>
+  </action>
+  <action name="actionbegin">
+   <property name="text">
+    <string>开始一项漏洞测试...</string>
    </property>
   </action>
  </widget>

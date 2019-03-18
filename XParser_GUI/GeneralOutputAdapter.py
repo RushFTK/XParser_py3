@@ -21,6 +21,7 @@ class GeneralOutputAdapter(QtWidgets.QDialog):
         self.ui.pushButton_close.clicked.connect(quit)
         self.flag_running = False
         self.clear_all_message()
+        self.gen_demo()
 
     def showEvent(self, QShowEvent):
         pass
@@ -61,11 +62,26 @@ class GeneralOutputAdapter(QtWidgets.QDialog):
         savefiledialog = QtWidgets.QFileDialog()
         filename = savefiledialog.getSaveFileName(caption='输出日志另存为...', filter="*.txt;; *.log")
         self.add_info_message('存储日志至:' + filename[0])
-        print(filename)
+
+    def readmessage_fromfile(self):
+        """从文件中读取日志，显示在窗口中，"""
+
+        pass
 
     def clear_all_message(self):
         """清空消息窗口中的原有内容"""
         self.ui.MessageBrowser.clear()
+
+    def gen_demo(self):
+        self.add_info_message('调用模块 简单遗传算法')
+        self.add_info_message('调用模块 Scrapy v1.5 + Xpath ')
+        self.add_info_message('进行漏洞测试')
+        self.add_info_message('注入攻击向量 1 ')
+        self.add_info_message('访问目标网址 http://owasptest.409dostastudio.work/index.php?page=add-to-your-blog.php')
+        self.add_warning_message('尚未捕获到注入成功标志')
+        self.add_info_message('注入攻击向量 2 ')
+        self.add_warning_message('捕获到注入成功标志')
+        self.add_info_message('运行完毕，共对 1 个注入点使用 2 个攻击向量，成功 1 次')
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
