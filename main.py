@@ -26,10 +26,14 @@ def demo_non_get_post_check(debug_info = False,extend_attacker = []):
         if (debug_info): print('可以注入的输入框={0}'.format(inputable_inputbox))
         if (debug_info): print('可能交互的按钮={0}'.format(clickbale_buttons))
         list_successinjuredinput = []
+        list_injuredtrys = []
         if (len(inputable_inputbox) > 0 and len(clickbale_buttons) > 0):
             for vector in attacker_vector_list:
                 sublist_successinjuredinput, flag = srequester.check_inv_input_list_nonhidden(vector,inputable_inputbox,clickbale_buttons,if_headless = True)
-                list_successinjuredinput.append({'finded_injured':sublist_successinjuredinput, 'using_vector':vector})
+                list_injuredtrys.append({'finded_injured':sublist_successinjuredinput, 'using_vector':vector})
+                if (sublist_successinjuredinput != []):
+                    list_successinjuredinput.append({'finded_injured': sublist_successinjuredinput, 'using_vector': vector})
+        if (debug_info): print('总共尝试的注入点={0}'.format(list_injuredtrys))
         print('最终找到的注入点={0}'.format(list_successinjuredinput))
 
 def demo_GA(debug_info=False):
@@ -40,7 +44,7 @@ def demo_GA(debug_info=False):
     demo_population = simple_demo_GA.population(genetic_obj=demo_genetic,
                                                 start_vector_list=__in_basevector,
                                                 min_fitness=20,
-                                                max_generation=4)
+                                                max_generation=10)
     demo_population.run_population(if_debug=debug_info)
     print('最终生成的种群:')
     for item in demo_population.current_individual_list:
