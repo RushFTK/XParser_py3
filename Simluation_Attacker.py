@@ -129,14 +129,14 @@ class Simluation_Request(object):
                     clean_list_waitforclick.append(item)
         return clean_list_waitforclick
 
-    def check_inv_input_list_nonhidden(self, vector, list_waitforinput, list_waitforclick):
+    def check_inv_input_list_nonhidden(self, vector, list_waitforinput, list_waitforclick,if_headless = True):
         flag = 'exit_success'
         list_successinjuredinput = []
         target_url = list_waitforinput[0]['source_url']
         browser_options = webdriver.ChromeOptions()
         for point_waitforinput in list_waitforinput:
             if_successful = False
-            run_check,stored_success_check = check_module.check_attacksuccess_byfindalter(target_url, background=False)
+            run_check,stored_success_check = check_module.check_attacksuccess_byfindalter(target_url, background=if_headless)
             if (run_check != 'run_success'):
                 flag = 'fail:url_unreachable'
                 break;
@@ -147,7 +147,8 @@ class Simluation_Request(object):
                     break;
 
             for point_waitforclick in list_waitforclick:
-                # browser_options.add_argument('headless')
+                if (if_headless):
+                    browser_options.add_argument('headless')
                 driver = webdriver.Chrome(r'%s/drivers/chromedriver.exe' % os.path.dirname(__file__),
                                           chrome_options=browser_options)
                 driver.get(point_waitforinput['source_url'])

@@ -16,7 +16,7 @@ class scannerspider(scrapy.Spider):
         'SCHEDULER_MEMORY_QUEUE' : 'scrapy.squeues.FifoMemoryQueue'
     }
 
-    def __init__(self, start_urls=None, depth=None, *args, **kwargs):
+    def __init__(self, start_urls=None, depth=None,no_next_crawl=None,*args, **kwargs):
         super(eval(self.__class__.__name__), self).__init__(*args, **kwargs)
         self.start_url = start_urls
         #仅允许访问目标网址所在站点
@@ -25,6 +25,10 @@ class scannerspider(scrapy.Spider):
         if (depth != None):
             self.custom_settings['DEPTH_LIMIT'] = depth
             self.depth = depth
+        if (no_next_crawl != None):
+            self.no_next_crawl = True
+        else:
+            self.no_next_crawl = False
 
     def start_requests(self):
         yield scrapy.Request(self.start_url, self.parse)
@@ -56,19 +60,21 @@ class scannerspider(scrapy.Spider):
         #print(input_list)
 
         #获取其他网页链接
-        other_page_list = response.xpath('//@href|//@src|//@action')
-        for link in other_page_list:
-            link_extracted = link.extract()
-            if (link_extracted != ''):
-                if ((urlparse(link_extracted).netloc == '') or (urlparse(link_extracted).netloc == self.allowed_domain)):
-                    accept_re = r'(\.php)|(\.html)'
-                    if ('.' in link_extracted):
-                        if (re.search(accept_re,link_extracted) == None):
-                            continue
-                    accept_url = urljoin(response.url,link.extract())
-                    next_url_list.append(accept_url)
-        for url in next_url_list:
-            yield scrapy_splash.SplashRequest(url,callback=self.parse)
+        if (not self.no_next_crawl):
+            other_page_list = response.xpath('//@href|//@src|//@action')
+            for link in other_page_list:
+                link_extracted = link.extract()
+                if (link_extracted != ''):
+                    if ((urlparse(link_extracted).netloc == '') or (
+                            urlparse(link_extracted).netloc == self.allowed_domain)):
+                        accept_re = r'(\.php)|(\.html)'
+                        if ('.' in link_extracted):
+                            if (re.search(accept_re, link_extracted) == None):
+                                continue
+                        accept_url = urljoin(response.url, link.extract())
+                        next_url_list.append(accept_url)
+            for url in next_url_list:
+                yield scrapy_splash.SplashRequest(url, callback=self.parse)
         # other_page_list = response.xpath('/body//@href')
         # print(other_page_list)
         # for link in other_page_list:
