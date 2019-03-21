@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.common import exceptions as selenium_exceptions
 import urllib.request
 import web_checker.check as check_module
 import json
@@ -151,21 +152,24 @@ class Simluation_Request(object):
                                           chrome_options=browser_options)
                 driver.get(point_waitforinput['source_url'])
                 current_rul = point_waitforinput['source_url']
-                #拥有id的情况
-                if(point_waitforinput['id'] != None):
-                    input_box =  driver.find_element_by_id(point_waitforinput['id'])
-                    input_box.clear()
-                    input_box.send_keys(vector)
-                #拥有name的情况
-                if(point_waitforinput['name']!=None):
-                    input_box =  driver.find_element_by_name(point_waitforinput['name'])
-                    input_box.clear()
-                    input_box.send_keys(vector)
-                #进行点击
-                if(point_waitforclick['id'] != None):
-                    driver.find_element_by_id(point_waitforclick['id']).click()
-                if(point_waitforclick['name'] != None):
-                    driver.find_element_by_name(point_waitforclick['name']).click()
+                try:
+                    #拥有id的情况
+                    if(point_waitforinput['id'] != None):
+                        input_box =  driver.find_element_by_id(point_waitforinput['id'])
+                        input_box.clear()
+                        input_box.send_keys(vector)
+                    #拥有name的情况
+                    if(point_waitforinput['name']!=None):
+                        input_box =  driver.find_element_by_name(point_waitforinput['name'])
+                        input_box.clear()
+                        input_box.send_keys(vector)
+                    #进行点击
+                    if(point_waitforclick['id'] != None):
+                        driver.find_element_by_id(point_waitforclick['id']).click()
+                    if(point_waitforclick['name'] != None):
+                        driver.find_element_by_name(point_waitforclick['name']).click()
+                except selenium_exceptions.InvalidElementStateException:
+                    continue
                 #点击后检测是否成功
                 if_successful = check_module.check_if_drivers_exist(driver)
             if (if_successful): list_successinjuredinput.append(point_waitforinput)

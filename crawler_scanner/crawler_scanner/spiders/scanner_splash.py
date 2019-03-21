@@ -1,13 +1,15 @@
 import scrapy
 import scrapy_splash
 import json
+import re
 from ..items import CrawledInputs,CrawledForm
+from scrapy.conf import settings as scrapy_setting_info
 from scrapy.exporters import JsonItemExporter
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 
 class scannerspider(scrapy.Spider):
-    name = "scanner"
+    name = "scanner_splash"
     url_lists = []
     custom_settings = {
         'DEPTH_LIMIT': 2,
@@ -27,7 +29,7 @@ class scannerspider(scrapy.Spider):
             self.depth = depth
 
     def start_requests(self):
-        yield scrapy.Request(self.start_url, self.parse)
+        yield scrapy_splash.SplashRequest(self.start_url, self.parse)
 
     def parse(self, response):
         next_url_list = []
@@ -69,16 +71,13 @@ class scannerspider(scrapy.Spider):
                     next_url_list.append(accept_url)
         for url in next_url_list:
             yield scrapy_splash.SplashRequest(url,callback=self.parse)
-        # other_page_list = response.xpath('/body//@href')
-        # print(other_page_list)
-        # for link in other_page_list:
-        #     if (urlparse(link).netloc != None):
+        #    if (urlparse(link).netloc != None):
         #         if (urlparse(link).netloc != self.allowed_domain):  continue
         #     else:
         #         link = urljoin(response.url,link)
         #     next_url_list.append(link)
         # for url in next_url_list:
-        #     yield  scrapy.Request(url,callback=self.parse)
+        #     yield  scrapy_splash.SplashRequest(url,callback=self.parse)
 
 
 
@@ -89,7 +88,7 @@ class scannerspider(scrapy.Spider):
         all_indivial_inputs = response.xpath('//input|//textarea')
         for inputs in all_indivial_inputs:
             current_indivial_input = CrawledInputs()
-            current_indivial_input['source_url'] = response.request.url
+            current_indivial_input['source_url'] = response.url
             extract_name = inputs.xpath('@id').extract()
             current_indivial_input['id'] = extract_name[0] if len(extract_name)>0 else None
             extract_name = inputs.xpath('@name').extract()

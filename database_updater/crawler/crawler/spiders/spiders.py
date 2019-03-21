@@ -107,15 +107,3 @@ class owsap_XSSFilterEvasionCheatSheet(scrapy.Spider):
     def parse(self, response):
         # 所有Sheet的样例均存在<pre>标签中
         pass
-
-#一个爬虫demo
-class HuxiuSpider(scrapy.Spider):
-    name = "huxiu"
-    allowed_domains = ["huxiu.com"]
-    start_urls = [
-        "http://www.huxiu.com/index.php"
-    ]
-
-    def parse(self, response):
-        for sel in response.xpath('//div[@class="mod-info-flow"]/div/div[@class="mob-ctt"]'):
-            print(sel.xpath('h3/a/text()')[0].extract(),sel.xpath('h3/a/@href')[0].extract(),sel.xpath('div[@class="mob-sub"]/text()')[0].extract())
